@@ -44,13 +44,16 @@ router.post("/login", async (req, res) => {
     }
 
     // Autenticación exitosa
-    res.json({ message: "✅ Autenticación satisfactoria." });
+    res.json({
+        message: "✅ Autenticación satisfactoria.",
+        user: {
+            username: user.username,
+            email: user.email
+        }
+    });
 });
 
-/**
- * Ruta para obtener el perfil de un usuario
- * GET /auth/profile/:username
- */
+
 router.get("/profile/:username", async (req, res) => {
     try {
         const { username } = req.params;
@@ -80,11 +83,6 @@ router.get("/profile/:username", async (req, res) => {
     }
 });
 
-/**
- * Ruta para obtener el perfil del usuario autenticado
- * POST /auth/my-profile
- * Se espera un objeto JSON con: username y password
- */
 router.post("/my-profile", async (req, res) => {
     try {
         const { username, password } = req.body;
