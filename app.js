@@ -12,7 +12,10 @@ app.use(cors());
 
 //  rutas
 const authRoutes = require("./routes/auth");       // Rutas de login y register
+const postRoutes = require("./routes/post");       // Rutas de posts y comentarios
+
 app.use("/auth", authRoutes);
+app.use("/posts", postRoutes);
 
 
 // Conexión a MongoDB
