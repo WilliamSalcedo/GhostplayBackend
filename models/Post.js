@@ -33,7 +33,7 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: false,
         default: 'General',
-        enum: ['General', 'Reviews', 'Noticias', 'Tutoriales', 'Discusión']
+        enum: ['General', 'Acción', 'RPG', 'Deportes', 'Estrategia', 'Aventura' ]
     },
     game: {
         type: String,
