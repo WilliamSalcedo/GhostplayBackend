@@ -44,7 +44,71 @@ router.post("/login", async (req, res) => {
     }
 
     // Autenticación exitosa
-    res.json({ message: "✅ Autenticación satisfactoria." });
+    res.json({
+        message: "✅ Autenticación satisfactoria.",
+        user: {
+            username: user.username,
+            email: user.email
+        }
+    });
+});
+
+
+router.get("/profile/:username", async (req, res) => {
+    try {
+        const { username } = req.params;
+        
+        // Buscar usuario por username
+        const user = await User.findOne({ username });
+        
+        if (!user) {
+            return res.status(404).json({ message: "❌ Usuario no encontrado." });
+        }
+
+        // Retornar datos del perfil (sin la contraseña)
+        const userProfile = {
+            username: user.username,
+            email: user.email,
+            favoriteConsole: user.favoriteConsole,
+            createdAt: user._id.getTimestamp() // Fecha de creación del usuario
+        };
+
+        res.json({
+            message: "✅ Perfil obtenido exitosamente",
+            user: userProfile
+        });
+        
+    } catch (error) {
+        res.status(500).json({ message: "❌ Error al obtener el perfil.", error: error.message });
+    }
+});
+
+router.post("/my-profile", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Validar credenciales
+        const user = await User.findOne({ username });
+        if (!user || user.password !== password) {
+            return res.status(401).json({ message: "❌ Usuario o contraseña incorrectos." });
+        }
+
+        // Retornar datos del perfil (sin la contraseña)
+        const userProfile = {
+            username: user.username,
+            email: user.email,
+            favoriteConsole: user.favoriteConsole,
+            createdAt: user._id.getTimestamp()
+        };
+
+        res.json({
+            message: "✅ Perfil obtenido exitosamente",
+            user: userProfile
+        });
+        
+    } catch (error) {
+        res.status(500).json({ message: "❌ Error al obtener el perfil.", error: error.message });
+    }
 });
 
 module.exports = router;

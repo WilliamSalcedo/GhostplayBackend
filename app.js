@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -11,11 +12,14 @@ app.use(cors());
 
 //  rutas
 const authRoutes = require("./routes/auth");       // Rutas de login y register
+const postRoutes = require("./routes/post");       // Rutas de posts y comentarios
+
 app.use("/auth", authRoutes);
+app.use("/posts", postRoutes);
 
 
 // Conexión a MongoDB
-mongoose.connect("mongodb+srv://ghost_123:ghost123@cluster0.tgshhiw.mongodb.net/GhostPlay?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -24,7 +28,8 @@ mongoose.connect("mongodb+srv://ghost_123:ghost123@cluster0.tgshhiw.mongodb.net/
   
 
 // Escuchar peticiones
-app.listen(3012, () => {
-    console.log("🚀 Servidor corriendo en http://localhost:3012");
+const PORT = process.env.PORT || 3012;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
 
